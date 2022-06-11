@@ -2,8 +2,10 @@ import React from "react";
 import App from "next/app";
 import Head from "next/head";
 import Layout from "../components/Layout";
+import withData from "../lib/apollo";
 
-export default class MyApp extends App {
+// 全てのコンポーネントの幹になる
+class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props;
     return (
@@ -22,3 +24,5 @@ export default class MyApp extends App {
     );
   }
 }
+
+export default withData(MyApp);
