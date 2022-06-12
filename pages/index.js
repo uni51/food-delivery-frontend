@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Row, Col, InputGroup, InputGroupText, Input } from "reactstrap";
 import RestaurantList from "../components/RestaurantList";
 
 const index = () => {
+  const [query, setQuery] = useState("");
+
   return (
     <div className="container-fluid">
       <Row>
@@ -9,10 +12,13 @@ const index = () => {
           <div className="search">
             <InputGroup>
               <InputGroupText>探す</InputGroupText>
-              <Input placeholder="レストラン名を入力してください" />
+              <Input
+                placeholder="レストラン名を入力してください"
+                onChange={(e) => setQuery(e.target.value.toLowerCase())}
+              />
             </InputGroup>
           </div>
-          <RestaurantList />
+          <RestaurantList search={query} />
         </Col>
       </Row>
       <style jsx>{`
