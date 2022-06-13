@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { CardImg, Card, Col, Row, CardBody, CardTitle } from "reactstrap";
+import {
+  CardImg,
+  Card,
+  Col,
+  Row,
+  CardBody,
+  CardTitle,
+  Button,
+} from "reactstrap";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
@@ -35,48 +43,48 @@ const Restaurants = (props) => {
   if (data) {
     const { restaurant } = data;
     return (
-      <Row>
-        {restaurant.dishes.map((res) => (
-          <Col xs="6" sm="4" key={res.id}>
-            <Card style={{ margin: "0 0.5rem 20px 0.5rem" }}>
-              <CardImg
-                src={`${process.env.NEXT_PUBLIC_API_URL}${res.image.url}`}
-                top={true}
-                style={{ height: 250 }}
-              />
-              <CardBody>
-                <CardTitle>{res.name}</CardTitle>
-                <CardTitle>{res.description}</CardTitle>
-              </CardBody>
-              <div className="card-footer">
-                <Link
-                  as={`restaurants/${res.id}`}
-                  href={`restaurants?id=${res.id}`}
-                >
-                  <a className="btn btn-primary">もっと見る</a>
-                </Link>
-              </div>
-            </Card>
-          </Col>
-        ))}
-        <style jsx>
-          {`
-            a {
-              color: white;
-            }
-            a: link {
-              text-decoration: none;
-              color: white;
-            }
-            a: hover {
-              color: white;
-            }
-            .card-columns {
-              column-count: 3;
-            }
-          `}
-        </style>
-      </Row>
+      <>
+        <h1>{restaurant.name}</h1>
+        <Row>
+          {restaurant.dishes.map((res) => (
+            <Col xs="6" sm="4" key={res.id} style={{ padding: 0 }}>
+              <Card style={{ margin: "0 10px" }}>
+                <CardImg
+                  src={`${process.env.NEXT_PUBLIC_API_URL}${res.image.url}`}
+                  top={true}
+                  style={{ height: 250 }}
+                />
+                <CardBody>
+                  <CardTitle>{res.name}</CardTitle>
+                  <CardTitle>{res.description}</CardTitle>
+                </CardBody>
+                <div className="card-footer">
+                  <Button outline color="primary">
+                    + カートに入れる
+                  </Button>
+                </div>
+              </Card>
+            </Col>
+          ))}
+          <style jsx>
+            {`
+              a {
+                color: white;
+              }
+              a: link {
+                text-decoration: none;
+                color: white;
+              }
+              a: hover {
+                color: white;
+              }
+              .card-columns {
+                column-count: 3;
+              }
+            `}
+          </style>
+        </Row>
+      </>
     );
   } else {
     return <h1>レストランが見つかりませんでした。</h1>;
