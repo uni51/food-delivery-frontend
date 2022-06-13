@@ -16,7 +16,7 @@ const query = gql`
   }
 `;
 
-const RestaurantList = (props) => {
+const Restaurants = (props) => {
   const { loading, error, data } = useQuery(query);
 
   if (error) return "レストランの読み込みに失敗しました。";
@@ -76,4 +76,4 @@ const RestaurantList = (props) => {
   }
 };
 
-export default RestaurantList;
+export default Restaurants;
