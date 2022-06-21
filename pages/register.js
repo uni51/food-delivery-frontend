@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Form,
   Col,
@@ -9,16 +9,21 @@ import {
   Input,
   Button,
 } from "reactstrap";
+import AppContext from "../context/AppContext";
 import { registerUser } from "../lib/auth";
 
 const register = () => {
+  const appContext = useContext(AppContext);
+
   const [data, setData] = useState({ username: "", email: "", password: "" });
 
   const handleRegister = () => {
-    registerUser();
+    registerUser(data.username, data.email, data.password)
+      .then((res) => {
+        appContext.setUser(res.data.user);
+      })
+      .catch((err) => console.log(err));
   };
-
-  console.log(data);
 
   return (
     <Container>
@@ -70,7 +75,13 @@ const register = () => {
                     <small>パスワードをお忘れですか？</small>
                   </a>
                 </span>
-                <Button style={{ float: "right", width: 120 }} color="primary">
+                <Button
+                  style={{ float: "right", width: 120 }}
+                  color="primary"
+                  onClick={() => {
+                    handleRegister();
+                  }}
+                >
                   登録
                 </Button>
               </fieldset>
