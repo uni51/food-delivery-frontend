@@ -14,13 +14,12 @@ import { registerUser } from "../lib/auth";
 
 const register = () => {
   const appContext = useContext(AppContext);
-
   const [data, setData] = useState({ username: "", email: "", password: "" });
 
   const handleRegister = () => {
     registerUser(data.username, data.email, data.password)
-      .then((res) => {
-        appContext.setUser(res.data.user);
+      .then(() => {
+        appContext.setUser({ ...data });
       })
       .catch((err) => console.log(err));
   };
