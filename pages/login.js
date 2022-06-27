@@ -10,13 +10,25 @@ import {
   Button,
 } from "reactstrap";
 import AppContext from "../context/AppContext";
-import { registerUser } from "../lib/auth";
+import { login } from "../lib/auth";
 
-const login = () => {
+const Login = () => {
   const appContext = useContext(AppContext);
   const [data, setData] = useState({ identifier: "", password: "" });
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    login(data.identifier, data.password)
+      .then((res) => {
+        appContext.setUser(res.data.user);
+        console.log(res.data.user);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleChange = (e) => {
+    // e.target.nameは、Inputのname属性の値を取得する
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
 
   return (
     <Container>
@@ -36,6 +48,7 @@ const login = () => {
                     type="email"
                     name="identifier"
                     style={{ height: 50, fontSize: "1.2rem" }}
+                    onChange={(e) => handleChange(e)}
                   />
                 </FormGroup>
                 <FormGroup>
@@ -44,6 +57,7 @@ const login = () => {
                     type="password"
                     name="password"
                     style={{ height: 50, fontSize: "1.2rem" }}
+                    onChange={(e) => handleChange(e)}
                   />
                 </FormGroup>
                 <span>
@@ -84,4 +98,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

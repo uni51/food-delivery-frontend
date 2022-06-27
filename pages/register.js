@@ -12,14 +12,14 @@ import {
 import AppContext from "../context/AppContext";
 import { registerUser } from "../lib/auth";
 
-const register = () => {
+const Register = () => {
   const appContext = useContext(AppContext);
   const [data, setData] = useState({ username: "", email: "", password: "" });
 
   const handleRegister = () => {
     registerUser(data.username, data.email, data.password)
-      .then(() => {
-        appContext.setUser({ ...data });
+      .then((res) => {
+        appContext.setUser(res.data.user);
       })
       .catch((err) => console.log(err));
   };
@@ -107,4 +107,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Register;
