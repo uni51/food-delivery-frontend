@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 class MyApp extends App {
   state = {
     user: null,
+    cart: { items: [], total: 0 },
   };
 
   setUser = (user) => {
@@ -36,6 +37,25 @@ class MyApp extends App {
       });
     }
   }
+
+  // カートへ商品の追加
+  addItem = (item) => {
+    let { items } = this.state.cart;
+    const newItem = items.find((i) => i.id === item.id);
+    if (!newItem) {
+      item.quantity = 1;
+      // cartに追加
+      this.setState(
+        {
+          cart: {
+            items: [...items, item],
+            total: this.state.cart.total + item.price,
+          },
+        },
+        () => Cookies.set("cart", this.state.cart.items)
+      );
+    }
+  };
 
   render() {
     const { Component, pageProps } = this.props;
