@@ -121,6 +121,7 @@ class MyApp extends App {
           cart: this.state.cart,
           setUser: this.setUser,
           addItem: this.addItem,
+          removeItem: this.removeItem,
         }}
       >
         <>
