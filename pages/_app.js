@@ -74,6 +74,44 @@ class MyApp extends App {
     }
   };
 
+  // カートから商品を削除
+  removeItem = (item) => {
+    let { items } = this.state.cart;
+    const newItem = items.find((i) => i.id === item.id);
+    if (newItem.quantity > 1) {
+      this.setState(
+        {
+          cart: {
+            items: this.state.cart.items.map((item) =>
+              item.id === newItem.id
+                ? Object.assign({}, item, { quantity: item.quantity - 1 })
+                : item
+            ),
+            total: this.state.cart.total - item.price,
+          },
+        },
+        () => Cookies.set("cart", this.state.cart.items)
+      );
+    }
+    // カートに入っているその商品が1つの場合
+    else {
+      const items = [...this.state.cart.items];
+      const index = items.findIndex((i) => i.id === newItem.id);
+
+      items.splice(index, 1);
+
+      this.setState(
+        {
+          cart: {
+            items: items,
+            total: this.state.cart.total - item.price,
+          },
+        },
+        () => Cookies.set("cart", this.state.cart.items)
+      );
+    }
+  };
+
   render() {
     const { Component, pageProps } = this.props;
     return (
