@@ -31,7 +31,7 @@ const Cart = () => {
               ? cart.items.map((item) => {
                   if (item.quantity > 0) {
                     return (
-                      <div>
+                      <div key={item.id}>
                         <div className="items-one" style={{ marginBottom: 15 }}>
                           <div>
                             <span id="item-price">&nbsp; {item.price}円</span>

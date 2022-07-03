@@ -11,7 +11,7 @@ import {
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { useRouter } from "next/router";
-import Cart from "../components/cart";
+import Cart from "../components/Cart/index";
 import { useContext } from "react";
 import AppContext from "../context/AppContext";
 
