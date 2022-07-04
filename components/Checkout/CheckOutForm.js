@@ -1,3 +1,4 @@
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import Cookies from "js-cookie";
 import { useContext } from "react";
 import { FormGroup, Input, Label } from "reactstrap";
@@ -10,15 +11,22 @@ const CheckoutForm = () => {
     stripe_id: "",
   });
 
+  const elements = useElements();
+  const stripe = useStripe();
+
   const handleChange = (e) => {
     const updateItem = (data[e.target.name] = e.target.value);
     setData({ ...data, updateItem });
   };
 
   const appContext = useContext(AppContext);
-  // 注文を確定させる関数
   const userToken = Cookies.get("token");
+
+  // 注文を確定させる関数
   const submitOrder = async () => {
+    const cardElement = elements.getElement(CardElement);
+    const token = await stripe.createToken(CardElement);
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
       method: "POST",
       headers: userToken && {
@@ -28,6 +36,7 @@ const CheckoutForm = () => {
         amount: Number(appContext.cart.total),
         dishes: appContext.cart.items,
         address: data.address,
+        token: token.token.id,
       }),
     });
   };
