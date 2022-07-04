@@ -1,6 +1,6 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import Cookies from "js-cookie";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FormGroup, Input, Label } from "reactstrap";
 import AppContext from "../../context/AppContext";
 import CardSection from "./CardSection";
@@ -25,7 +25,7 @@ const CheckoutForm = () => {
   // 注文を確定させる関数
   const submitOrder = async () => {
     const cardElement = elements.getElement(CardElement);
-    const token = await stripe.createToken(CardElement);
+    const token = await stripe.createToken(cardElement);
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
       method: "POST",
@@ -39,6 +39,12 @@ const CheckoutForm = () => {
         token: token.token.id,
       }),
     });
+
+    if (response.ok) {
+      console.log("注文に成功しました");
+    } else {
+      console.log("注文に失敗しました");
+    }
   };
 
   return (
@@ -52,7 +58,7 @@ const CheckoutForm = () => {
         </div>
       </FormGroup>
 
-      <CardSection />
+      <CardSection submitOrder={submitOrder} />
       <style jsx global>
         {`
           .paper {
